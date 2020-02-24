@@ -1,0 +1,6 @@
+[
+    {"id":"0","firstName":"Joe","lastName":"Biden","passClear":"xpto","passHash":"3851b1ae73ca0ca6e3c24a0256a80ace","email":"joe@gmail.com"},
+    {"id":"1","firstName":"Bernie","lastName":"Sanders","passClear":"xpto","passHash":"3851b1ae73ca0ca6e3c24a0256a80ace","email":"bernie@gmail.com"},
+    {"id":"2","firstName":"Elizabeth","lastName":"Warren","passClear":"xpto","passHash":"3851b1ae73ca0ca6e3c24a0256a80ace","email":"elizabeth@gmail.com"},
+    {"id":"3","firstName":"Donald","lastName":"Trump","passClear":"xpto","passHash":"3851b1ae73ca0ca6e3c24a0256a80ace","email":"donald@gmail.com"}
+]
