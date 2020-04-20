@@ -44,12 +44,6 @@
         android:layout_marginTop="17dp"
         android:onClick="verifyLogin"
         />
-    <TextView
-        android:id="@+id/error_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_button"
-        />
 
     <ProgressBar
         android:id="@+id/progressBar"
