@@ -7,6 +7,5 @@ class Utils {
 
     public static String md5(String input) {
         return new String(Hex.encodeHex(DigestUtils.md5(input)));
-
     }
 }

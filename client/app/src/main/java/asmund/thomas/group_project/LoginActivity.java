@@ -2,21 +2,17 @@ package asmund.thomas.group_project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
@@ -38,15 +34,22 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
+
         RequestQueue queue = Volley.newRequestQueue(this);
         Response.Listener listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println(response);
-                errorText.setText("Response is: "+ response);
+                if (response != null) {
+                    Gson g = new Gson();
+                    Person person = g.fromJson(response, Person.class);
+                    final SharedPreferences.Editor editor = getSharedPreferences("MySharedPref", MODE_PRIVATE).edit();
+                    editor.putString("user", response);
+                    errorText.setText("Response is: " + response);
+                }
             }
         };
-        Response.ErrorListener errorListener = new Response.ErrorListener(){
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
