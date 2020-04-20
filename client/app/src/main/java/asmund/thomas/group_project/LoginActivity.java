@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -16,6 +18,8 @@ import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
+    Button loginButton;
+    ProgressBar spinner;
     TextView errorText;
 
     final String LOGIN_URL = "http://10.0.2.2:8080/methodPostRemoteLogin";
@@ -27,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.username_input);
         passwordEditText = findViewById(R.id.password_input);
         errorText = findViewById(R.id.error_textview);
+        spinner = findViewById(R.id.progressBar);
+        loginButton = findViewById(R.id.login_button);
 
     }
 
@@ -34,12 +40,16 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
+        loginButton.setVisibility(View.INVISIBLE);
+        spinner.setVisibility(View.VISIBLE);
 
         RequestQueue queue = Volley.newRequestQueue(this);
         Response.Listener listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println(response);
+                loginButton.setVisibility(View.VISIBLE);
+                spinner.setVisibility(View.INVISIBLE);
                 if (response != null) {
                     Gson g = new Gson();
                     Person person = g.fromJson(response, Person.class);
@@ -55,6 +65,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 errorText.setText("That didn't work!");
                 System.out.println(error.getMessage());
+                loginButton.setVisibility(View.VISIBLE);
+                spinner.setVisibility(View.INVISIBLE);
             }
         };
         LoginRequest loginRequest = new LoginRequest(username, Utils.md5(password), listener, errorListener);

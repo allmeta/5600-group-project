@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -14,20 +15,25 @@
 
     <EditText
         android:id="@+id/username_input"
-        android:hint="Username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:layout_below="@+id/logo"/>
+        android:hint="Username"
+        android:singleLine="true" />
 
     <EditText
         android:id="@+id/password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_below="@+id/username_input"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
         android:hint="Password"
-        android:layout_below="@+id/username_input" />
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/login_button"
@@ -44,4 +50,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/login_button"
         />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:layout_below="@+id/password_input"
+        android:indeterminate="true"
+        android:indeterminateTint="#3b5649"
+        />
+
 </RelativeLayout>
