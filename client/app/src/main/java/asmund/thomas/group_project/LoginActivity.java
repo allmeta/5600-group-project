@@ -3,6 +3,7 @@ package asmund.thomas.group_project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,21 +36,23 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, LOGIN_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        System.out.println(response);
-                        errorText.setText("Response is: "+ response);
-                    }
-                }, new Response.ErrorListener() {
+        Response.Listener listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
+                errorText.setText("Response is: "+ response);
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener(){
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 errorText.setText("That didn't work!");
                 System.out.println(error.getMessage());
             }
-        });
-        queue.add(stringRequest);
+        };
+        LoginRequest loginRequest = new LoginRequest(username, password, listener, errorListener);
+        queue.add(loginRequest);
 
 
     }
