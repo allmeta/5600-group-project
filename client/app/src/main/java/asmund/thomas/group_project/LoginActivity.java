@@ -15,6 +15,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class LoginActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
     TextView errorText;
@@ -51,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println(error.getMessage());
             }
         };
-        LoginRequest loginRequest = new LoginRequest(username, password, listener, errorListener);
+        LoginRequest loginRequest = new LoginRequest(username, Utils.md5(password), listener, errorListener);
         queue.add(loginRequest);
 
 
