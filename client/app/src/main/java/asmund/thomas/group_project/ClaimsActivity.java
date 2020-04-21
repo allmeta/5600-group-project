@@ -17,6 +17,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +30,8 @@ public class ClaimsActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private LayoutInflater layoutInflater;
     private RecyclerView.LayoutManager layoutManager;
+    private static final String CLAIMS_REQUEST_URL = "http://10.0.2.2:8080/getMethodMyClaims";
+
 
 
     private View.OnClickListener listOnClickListener = new View.OnClickListener() {
@@ -60,11 +66,17 @@ public class ClaimsActivity extends AppCompatActivity {
 
     private List<Claim> getClaimsForPerson(Person person) {
         RequestQueue queue = Volley.newRequestQueue(this);
+        ArrayList list = new ArrayList<Claim>();
         Response.Listener listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
-                    System.out.println(response);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray claimIds = jsonObject.getJSONArray("claimId");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
@@ -74,8 +86,10 @@ public class ClaimsActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         };
-        ClaimsRequest claimsRequest = new ClaimsRequest(person.getId(), listener, errorListener);
+        String urlWithIdParam = CLAIMS_REQUEST_URL + "?id="+person.id;
+        StringRequest claimsRequest = new StringRequest(urlWithIdParam, listener, errorListener);
+
         queue.add(claimsRequest);
-        return new ArrayList<Claim>();
+        return list;
     }
 }

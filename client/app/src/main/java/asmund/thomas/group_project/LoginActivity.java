@@ -12,11 +12,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
@@ -33,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password_input);
         spinner = findViewById(R.id.progressBar);
         loginButton = findViewById(R.id.login_button);
-
     }
 
     public void verifyLogin(View view) {
@@ -59,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     final SharedPreferences.Editor editor = getSharedPreferences("MySharedPref", MODE_PRIVATE).edit();
                     editor.putString("user", response);
                     editor.commit();
-                    errorText.setText("Response is: " + response);
+                    Toast.makeText(getApplicationContext(), "Response is: " + response, Toast.LENGTH_LONG).show();
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Invalid password",Toast.LENGTH_LONG).show();
@@ -76,7 +80,10 @@ public class LoginActivity extends AppCompatActivity {
                 spinner.setVisibility(View.INVISIBLE);
             }
         };
-        LoginRequest loginRequest = new LoginRequest(username, Utils.md5(password), listener, errorListener);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("em", username);
+        params.put("ph", Utils.md5(password));
+        CustomRequest loginRequest= new CustomRequest(Request.Method.POST,LOGIN_URL,  params, listener, errorListener);
         queue.add(loginRequest);
 
     }
