@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         String username = "joe@gmail.com";
         String password = "xpto";
 
-        loginButton.setVisibility(View.INVISIBLE);
+        loginButton.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
 
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 System.out.println(response);
                 loginButton.setVisibility(View.VISIBLE);
-                spinner.setVisibility(View.INVISIBLE);
+                spinner.setVisibility(View.GONE);
 
                 if (response != null) {
                     Gson g = new Gson();
@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"could not contact server",Toast.LENGTH_LONG).show();
                 System.out.println(error.getMessage());
                 loginButton.setVisibility(View.VISIBLE);
-                spinner.setVisibility(View.INVISIBLE);
+                spinner.setVisibility(View.GONE);
             }
         };
         HashMap<String, String> params = new HashMap<>();

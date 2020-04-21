@@ -1,5 +1,9 @@
 package asmund.thomas.group_project;
 
+import android.content.Context;
+import static android.content.Context.MODE_PRIVATE;
+import android.content.Intent;
+
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -14,5 +18,10 @@ class Utils {
 
     public static String md5(String input) {
         return new String(Hex.encodeHex(DigestUtils.md5(input)));
+    }
+    public static void logout(Context c){
+        c.getSharedPreferences("mySharedPref",MODE_PRIVATE).edit().clear().apply();
+        Intent intent = new Intent(c, LoginActivity.class);
+        c.startActivity(intent);
     }
 }
