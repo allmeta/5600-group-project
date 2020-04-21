@@ -32,6 +32,8 @@ public class ClaimsActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private static final String CLAIMS_REQUEST_URL = "http://10.0.2.2:8080/getMethodMyClaims";
 
+    static final int CLAIMS_ITEMS_ARRAY_SIZE = 5;
+
 
 
     private View.OnClickListener listOnClickListener = new View.OnClickListener() {
@@ -52,28 +54,39 @@ public class ClaimsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         String personJsonString = sh.getString("user", "");
         Gson g = new Gson();
         Person person = g.fromJson(personJsonString, Person.class);
-        claimList = getClaimsForPerson(person);
+        getClaimsForPerson(person);
 
-        adapter = new ClaimAdapter(claimList, listOnClickListener);
-        recyclerView.setAdapter(adapter);
+
 
     }
 
-    private List<Claim> getClaimsForPerson(Person person) {
+    private void getClaimsForPerson(Person person) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        ArrayList list = new ArrayList<Claim>();
         Response.Listener listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                claimList = new ArrayList<>();
                 if (response != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         JSONArray claimIds = jsonObject.getJSONArray("claimId");
+                        JSONArray claimDescriptions = jsonObject.getJSONArray("claimDes");
+                        JSONArray claimPhotos = jsonObject.getJSONArray("claimPhoto");
+                        JSONArray claimLocations = jsonObject.getJSONArray("claimLocation");
+                        for(int i = 0; i < claimIds.length(); i++){
+                            String claimId = claimIds.getString(i);
+                            String claimDes = claimDescriptions.getString(i);
+                            String claimPhoto = claimPhotos.getString(i);
+                            String claimLocation = claimLocations.getString(i);
+                            Claim c = new Claim(claimId, claimDes, claimPhoto, claimLocation);
+                            claimList.add(i, c);
+                        }
+                        adapter = new ClaimAdapter(claimList, listOnClickListener);
+                        recyclerView.setAdapter(adapter);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -88,8 +101,6 @@ public class ClaimsActivity extends AppCompatActivity {
         };
         String urlWithIdParam = CLAIMS_REQUEST_URL + "?id="+person.id;
         StringRequest claimsRequest = new StringRequest(urlWithIdParam, listener, errorListener);
-
         queue.add(claimsRequest);
-        return list;
     }
 }
