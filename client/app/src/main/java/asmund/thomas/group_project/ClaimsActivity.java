@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -45,10 +44,11 @@ public class ClaimsActivity extends AppCompatActivity {
             System.out.println(claim.des);
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_recycler_view);
+        setContentView(R.layout.activity_claims);
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -59,9 +59,6 @@ public class ClaimsActivity extends AppCompatActivity {
         Gson g = new Gson();
         Person person = g.fromJson(personJsonString, Person.class);
         getClaimsForPerson(person);
-
-
-
     }
 
     private void getClaimsForPerson(Person person) {
