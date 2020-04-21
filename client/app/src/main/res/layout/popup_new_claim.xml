@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/claim_id_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        />
+
+    <EditText
+        android:id="@+id/claim_des_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/claim_id_et"
+        />
+
+    <Button
+        android:id="@+id/barnehager_knapp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add claim"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>

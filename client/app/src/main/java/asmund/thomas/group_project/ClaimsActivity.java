@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,10 +31,12 @@ public class ClaimsActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private LayoutInflater layoutInflater;
     private RecyclerView.LayoutManager layoutManager;
-    private static final String CLAIMS_REQUEST_URL = "http://10.0.2.2:8080/getMethodMyClaims";
+    private PopupWindow popupWindow;
 
     static final int CLAIMS_ITEMS_ARRAY_SIZE = 5;
     private List<Claim> claimList;
+
+    private static final String CLAIMS_REQUEST_URL = "http://10.0.2.2:8080/getMethodMyClaims";
 
 
 
@@ -99,5 +104,15 @@ public class ClaimsActivity extends AppCompatActivity {
         String urlWithIdParam = Utils.CLAIMS_REQUEST_URL + "?id="+person.id;
         StringRequest claimsRequest = new StringRequest(urlWithIdParam, listener, errorListener);
         queue.add(claimsRequest);
+    }
+
+    public void openNewClaimWindow(View view) {
+        LayoutInflater layoutInflater = getLayoutInflater();
+        ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.popup_new_claim, null);
+        int width = recyclerView.getWidth();
+        int height = recyclerView.getHeight();
+
+        popupWindow = new PopupWindow(container, width-width/4, height-height/2, true);
+        popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
     }
 }
