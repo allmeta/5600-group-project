@@ -3,6 +3,7 @@ package asmund.thomas.group_project;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,11 +16,11 @@ public class LoginRequest extends StringRequest {
         params = new HashMap<>();
         params.put("em", username);
         params.put("ph", password);
-        System.out.println(password);
     }
 
     @Override
     public Map<String, String> getParams() {
+        System.out.println("aksføajsdøflja");
         return params;
     }
 }

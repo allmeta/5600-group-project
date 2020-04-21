@@ -2,6 +2,7 @@ package asmund.thomas.group_project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -31,26 +32,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void verifyLogin(View view) {
-        String username = usernameEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-
+        //String username = usernameEditText.getText().toString();
+        //String password = passwordEditText.getText().toString();
+        String username = "joe@gmail.com";
+        String password = "xpto";
 
         RequestQueue queue = Volley.newRequestQueue(this);
         Response.Listener listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println(response);
+
                 if (response != null) {
                     Gson g = new Gson();
                     Person person = g.fromJson(response, Person.class);
                     final SharedPreferences.Editor editor = getSharedPreferences("MySharedPref", MODE_PRIVATE).edit();
                     editor.putString("user", response);
+                    editor.commit();
                     errorText.setText("Response is: " + response);
                 }
+
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 errorText.setText("That didn't work!");
@@ -60,6 +63,10 @@ public class LoginActivity extends AppCompatActivity {
         LoginRequest loginRequest = new LoginRequest(username, Utils.md5(password), listener, errorListener);
         queue.add(loginRequest);
 
+    }
 
+    public void toClaims(View view) {
+        Intent intent = new Intent(getApplicationContext(), ClaimsActivity.class);
+        startActivity(intent);
     }
 }
