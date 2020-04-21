@@ -30,8 +30,6 @@ public class ClaimsActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private LayoutInflater layoutInflater;
     private RecyclerView.LayoutManager layoutManager;
-    private static final String CLAIMS_REQUEST_URL = "http://10.0.2.2:8080/getMethodMyClaims";
-
 
 
     private View.OnClickListener listOnClickListener = new View.OnClickListener() {
@@ -86,7 +84,7 @@ public class ClaimsActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         };
-        String urlWithIdParam = CLAIMS_REQUEST_URL + "?id="+person.id;
+        String urlWithIdParam = Utils.CLAIMS_REQUEST_URL + "?id="+person.id;
         StringRequest claimsRequest = new StringRequest(urlWithIdParam, listener, errorListener);
 
         queue.add(claimsRequest);

@@ -28,8 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     ProgressBar spinner;
 
-    final String LOGIN_URL = "http://10.0.2.2:8080/methodPostRemoteLogin";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password_input);
         spinner = findViewById(R.id.progressBar);
         loginButton = findViewById(R.id.login_button);
+        System.out.println(System.getenv("host"));
     }
 
     public void verifyLogin(View view) {
@@ -83,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         HashMap<String, String> params = new HashMap<>();
         params.put("em", username);
         params.put("ph", Utils.md5(password));
-        CustomRequest loginRequest= new CustomRequest(Request.Method.POST,LOGIN_URL,  params, listener, errorListener);
+        CustomRequest loginRequest= new CustomRequest(Request.Method.POST,Utils.LOGIN_URL,  params, listener, errorListener);
         queue.add(loginRequest);
 
     }
