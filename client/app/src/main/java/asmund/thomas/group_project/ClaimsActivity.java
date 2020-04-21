@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClaimsActivity extends AppCompatActivity {
-    private List<Claim> claimList;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private LayoutInflater layoutInflater;
@@ -33,6 +32,7 @@ public class ClaimsActivity extends AppCompatActivity {
     private static final String CLAIMS_REQUEST_URL = "http://10.0.2.2:8080/getMethodMyClaims";
 
     static final int CLAIMS_ITEMS_ARRAY_SIZE = 5;
+    private List<Claim> claimList;
 
 
 
@@ -99,7 +99,7 @@ public class ClaimsActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         };
-        String urlWithIdParam = CLAIMS_REQUEST_URL + "?id="+person.id;
+        String urlWithIdParam = Utils.CLAIMS_REQUEST_URL + "?id="+person.id;
         StringRequest claimsRequest = new StringRequest(urlWithIdParam, listener, errorListener);
         queue.add(claimsRequest);
     }
