@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,7 +20,8 @@ import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
-    TextView errorText;
+    Button loginButton;
+    ProgressBar spinner;
 
     final String LOGIN_URL = "http://10.0.2.2:8080/methodPostRemoteLogin";
 
@@ -27,7 +31,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         usernameEditText = findViewById(R.id.username_input);
         passwordEditText = findViewById(R.id.password_input);
-        errorText = findViewById(R.id.error_textview);
+        spinner = findViewById(R.id.progressBar);
+        loginButton = findViewById(R.id.login_button);
 
     }
 
@@ -37,10 +42,16 @@ public class LoginActivity extends AppCompatActivity {
         String username = "joe@gmail.com";
         String password = "xpto";
 
+        loginButton.setVisibility(View.INVISIBLE);
+        spinner.setVisibility(View.VISIBLE);
+
         RequestQueue queue = Volley.newRequestQueue(this);
         Response.Listener listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                System.out.println(response);
+                loginButton.setVisibility(View.VISIBLE);
+                spinner.setVisibility(View.INVISIBLE);
 
                 if (response != null) {
                     Gson g = new Gson();
@@ -50,14 +61,19 @@ public class LoginActivity extends AppCompatActivity {
                     editor.commit();
                     errorText.setText("Response is: " + response);
                 }
-
+                else{
+                    Toast.makeText(getApplicationContext(),"Invalid password",Toast.LENGTH_LONG).show();
+                }
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
-                errorText.setText("That didn't work!");
+                Toast.makeText(getApplicationContext(),"could not contact server",Toast.LENGTH_LONG).show();
                 System.out.println(error.getMessage());
+                loginButton.setVisibility(View.VISIBLE);
+                spinner.setVisibility(View.INVISIBLE);
             }
         };
         LoginRequest loginRequest = new LoginRequest(username, Utils.md5(password), listener, errorListener);
