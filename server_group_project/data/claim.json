@@ -1,31 +1,31 @@
 [
   {
     "id": "0",
-    "numberOfClaims": "0",
+    "numberOfClaims": "2",
     "claimId": [
-      "na",
-      "na",
+      "0",
+      "1",
       "na",
       "na",
       "na"
     ],
     "claimDes": [
-      "na",
-      "na",
+      "Første claim",
+      "Første claim",
       "na",
       "na",
       "na"
     ],
     "claimPhoto": [
-      "na",
-      "na",
+      "/photo/test",
+      "/photo/test",
       "na",
       "na",
       "na"
     ],
     "claimLocation": [
-      "na",
-      "na",
+      "koordinater",
+      "koordinater",
       "na",
       "na",
       "na"

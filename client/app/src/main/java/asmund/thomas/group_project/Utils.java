@@ -9,6 +9,7 @@ class Utils {
     private static final String BASE_URL="http://"+host+":"+port+"/";
     public static final String LOGIN_URL=BASE_URL+"methodPostRemoteLogin";
     public static final String CLAIMS_REQUEST_URL=BASE_URL+"getMethodMyClaims";
+    public static final String INSERT_NEW_CLAIM_URL = BASE_URL + "postInsertNewClaim";
 
 
     public static String md5(String input) {

@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -24,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ClaimsActivity extends AppCompatActivity {
@@ -114,5 +117,40 @@ public class ClaimsActivity extends AppCompatActivity {
 
         popupWindow = new PopupWindow(container, width-width/4, height-height/2, true);
         popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
+    }
+
+    public void addClaim(View view) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        Response.Listener listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
+
+                if (response != null) {
+                    Toast.makeText(getApplicationContext(), "Response is: " + response, Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Invalid password",Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),"could not contact server",Toast.LENGTH_LONG).show();
+                System.out.println(error.getMessage());
+            }
+        };
+        HashMap<String, String> params = new HashMap<>();
+
+        params.put("userId", "0");
+        params.put("indexUpdateClaim", "1");
+        params.put("newClaimDes", "Første claim");
+        params.put("newClaimPho", "/photo/test");
+        params.put("newClaimLoc", "koordinater");
+
+        CustomRequest insertNewClaimRequest= new CustomRequest(Request.Method.POST, Utils.INSERT_NEW_CLAIM_URL,  params, listener, errorListener);
+        queue.add(insertNewClaimRequest);
     }
 }

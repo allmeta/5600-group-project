@@ -4,19 +4,31 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical">
-
+    <TextView
+        android:id="@+id/client_id_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Claim id:"
+        android:layout_alignParentTop="true"
+        />
     <EditText
         android:id="@+id/claim_id_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/client_id_tv"
         />
-
+    <TextView
+        android:id="@+id/client_des_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Claim description:"
+        android:layout_below="@id/claim_id_et"
+        />
     <EditText
         android:id="@+id/claim_des_et"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/claim_id_et"
+        android:layout_height="100dp"
+        android:layout_below="@+id/client_des_tv"
         />
 
     <Button
@@ -25,6 +37,7 @@
         android:layout_height="wrap_content"
         android:text="Add claim"
         android:layout_alignParentBottom="true"
+        android:onClick="addClaim"
         />
 
 </RelativeLayout>

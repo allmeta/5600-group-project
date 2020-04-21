@@ -33,7 +33,7 @@ public class ClaimAdapter extends RecyclerView.Adapter<ClaimAdapter.ViewHolder>{
     public void onBindViewHolder(ClaimAdapter.ViewHolder viewHolder, int position) {
         Claim claim = claimList.get(position);
         TextView textView = viewHolder.nameTextView;
-        textView.setText(claim.getId());
+        textView.setText(claim.getDes());
     }
 
     @Override
