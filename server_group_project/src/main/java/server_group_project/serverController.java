@@ -44,6 +44,7 @@ public class serverController {
 	//@RequestMapping(value="/getMethodMyClaims", method=RequestMethod.GET) 
 	@GetMapping(value="/getMethodMyClaims")
 	public String  getMethodMyClaims(@RequestParam String id) {
+		System.out.println(id);
 		Claims cl;
 		if (id.equals(null)) {
 			out.println("serverController.getMethodMyClaims> FATAL ERROR with null id");
