@@ -20,12 +20,16 @@
         android:layout_height="100dp"
         android:layout_below="@+id/client_des_tv"
         />
-
+    <ImageView
+        android:id="@+id/claim_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/claim_des_et"/>
     <Button
         android:text="Take photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/claim_des_et"
+        android:layout_below="@id/claim_iv"
         android:onClick="openCamera"
         />
 
