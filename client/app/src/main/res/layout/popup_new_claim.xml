@@ -3,32 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/client_id_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Claim id:"
-        android:layout_alignParentTop="true"
-        />
-    <EditText
-        android:id="@+id/claim_id_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/client_id_tv"
-        />
+    android:orientation="vertical"
+    android:padding="20dp"
+    >
     <TextView
         android:id="@+id/client_des_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Claim description:"
-        android:layout_below="@id/claim_id_et"
+        android:layout_alignParentTop="true"
         />
     <EditText
+        android:background="@color/colorWhite"
         android:id="@+id/claim_des_et"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_below="@+id/client_des_tv"
+        />
+
+    <Button
+        android:text="Take photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/claim_des_et"
+        android:onClick="openCamera"
         />
 
     <Button
@@ -39,5 +37,6 @@
         android:layout_alignParentBottom="true"
         android:onClick="addClaim"
         />
+
 
 </RelativeLayout>
