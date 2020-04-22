@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -34,13 +35,13 @@ public class ClaimsActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private LayoutInflater layoutInflater;
     private RecyclerView.LayoutManager layoutManager;
-    private PopupWindow popupWindow;
 
-    static final int CLAIMS_ITEMS_ARRAY_SIZE = 5;
+    private PopupWindow popupWindow;
+    private EditText claimDesEditText;
     private List<Claim> claimList;
 
-    private static final String CLAIMS_REQUEST_URL = "http://10.0.2.2:8080/getMethodMyClaims";
-
+    SharedPreferences sh;
+    Person currentUser;
 
 
     private View.OnClickListener listOnClickListener = new View.OnClickListener() {
@@ -62,14 +63,15 @@ public class ClaimsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+
+        sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         String personJsonString = sh.getString("user", "");
         Gson g = new Gson();
-        Person person = g.fromJson(personJsonString, Person.class);
-        getClaimsForPerson(person);
+        currentUser = g.fromJson(personJsonString, Person.class);
+        getClaimsForPerson(currentUser.getId());
     }
 
-    private void getClaimsForPerson(Person person) {
+    private void getClaimsForPerson(String personId) {
         RequestQueue queue = Volley.newRequestQueue(this);
         Response.Listener listener = new Response.Listener<String>() {
             @Override
@@ -78,6 +80,7 @@ public class ClaimsActivity extends AppCompatActivity {
                 if (response != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
+                        currentUser.setNumberOfClaims(jsonObject.getInt("numberOfClaims"));
                         JSONArray claimIds = jsonObject.getJSONArray("claimId");
                         JSONArray claimDescriptions = jsonObject.getJSONArray("claimDes");
                         JSONArray claimPhotos = jsonObject.getJSONArray("claimPhoto");
@@ -95,6 +98,7 @@ public class ClaimsActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    System.out.println("claims: "+currentUser.getNumberOfClaims());
                 }
             }
         };
@@ -104,7 +108,7 @@ public class ClaimsActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         };
-        String urlWithIdParam = Utils.CLAIMS_REQUEST_URL + "?id="+person.id;
+        String urlWithIdParam = Utils.CLAIMS_REQUEST_URL + "?id="+personId;
         StringRequest claimsRequest = new StringRequest(urlWithIdParam, listener, errorListener);
         queue.add(claimsRequest);
     }
@@ -112,6 +116,7 @@ public class ClaimsActivity extends AppCompatActivity {
     public void openNewClaimWindow(View view) {
         LayoutInflater layoutInflater = getLayoutInflater();
         ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.popup_new_claim, null);
+        claimDesEditText = container.findViewById(R.id.claim_des_et);
         int width = recyclerView.getWidth();
         int height = recyclerView.getHeight();
 
@@ -129,9 +134,7 @@ public class ClaimsActivity extends AppCompatActivity {
                 if (response != null) {
                     Toast.makeText(getApplicationContext(), "Response is: " + response, Toast.LENGTH_LONG).show();
                 }
-                else{
-                    Toast.makeText(getApplicationContext(),"Invalid password",Toast.LENGTH_LONG).show();
-                }
+
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
@@ -144,13 +147,16 @@ public class ClaimsActivity extends AppCompatActivity {
         };
         HashMap<String, String> params = new HashMap<>();
 
-        params.put("userId", "0");
-        params.put("indexUpdateClaim", "1");
-        params.put("newClaimDes", "Første claim");
+        params.put("userId", currentUser.getId());
+        params.put("indexUpdateClaim", currentUser.getNumberOfClaims()+"");
+        params.put("newClaimDes", claimDesEditText.getText().toString());
         params.put("newClaimPho", "/photo/test");
         params.put("newClaimLoc", "koordinater");
 
         CustomRequest insertNewClaimRequest= new CustomRequest(Request.Method.POST, Utils.INSERT_NEW_CLAIM_URL,  params, listener, errorListener);
         queue.add(insertNewClaimRequest);
+    }
+
+    public void openCamera(View view) {
     }
 }
