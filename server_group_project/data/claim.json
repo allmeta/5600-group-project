@@ -11,21 +11,21 @@
     ],
     "claimDes": [
       "Første claim",
-      "Første claim",
+      "Real claim",
       "na",
       "na",
       "na"
     ],
     "claimPhoto": [
       "/photo/test",
-      "/photo/test",
+      "IMG_20200422_210056.jpg",
       "na",
       "na",
       "na"
     ],
     "claimLocation": [
       "koordinater",
-      "koordinater",
+      "59.911491,10.757933",
       "na",
       "na",
       "na"

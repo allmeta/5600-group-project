@@ -62,7 +62,10 @@ public class ClaimsActivity extends AppCompatActivity {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
             int position = viewHolder.getAdapterPosition();
             Claim claim = claimList.get(position);
-            System.out.println(claim.des);
+            Intent intent = new Intent(getApplicationContext(), ViewClaimActivity.class);
+            // Pass claim to new activity
+            intent.putExtra("claim",new Gson().toJson(claim));
+            startActivity(intent);
         }
     };
 
