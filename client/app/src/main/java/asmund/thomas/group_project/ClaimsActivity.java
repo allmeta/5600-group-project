@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -39,17 +40,16 @@ public class ClaimsActivity extends AppCompatActivity {
     static final int CLAIMS_ITEMS_ARRAY_SIZE = 5;
     private List<Claim> claimList;
 
-    private static final String CLAIMS_REQUEST_URL = "http://10.0.2.2:8080/getMethodMyClaims";
-
-
-
     private View.OnClickListener listOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
             int position = viewHolder.getAdapterPosition();
             Claim claim = claimList.get(position);
-            System.out.println(claim.des);
+            Intent intent = new Intent(getApplicationContext(), ViewClaimActivity.class);
+            // Pass claim to new activity
+            intent.putExtra("claim",new Gson().toJson(claim));
+            startActivity(intent);
         }
     };
 
