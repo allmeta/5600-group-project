@@ -4,6 +4,8 @@ import android.content.Context;
 import static android.content.Context.MODE_PRIVATE;
 import android.content.Intent;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -23,5 +25,10 @@ class Utils {
         c.getSharedPreferences("mySharedPref",MODE_PRIVATE).edit().clear().apply();
         Intent intent = new Intent(c, LoginActivity.class);
         c.startActivity(intent);
+    }
+    public static LatLng locToLatLng(String s){
+        String[] latlong=s.split(",");
+        return new LatLng(Double.parseDouble(latlong[0]),Double.parseDouble(latlong[1]));
+
     }
 }
