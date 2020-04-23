@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,9 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
@@ -62,7 +59,8 @@ public class LoginActivity extends AppCompatActivity {
                     final SharedPreferences.Editor editor = getSharedPreferences("MySharedPref", MODE_PRIVATE).edit();
                     editor.putString("user", response);
                     editor.commit();
-                    Toast.makeText(getApplicationContext(), "Response is: " + response, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), ClaimsActivity.class);
+                    startActivity(intent);
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Invalid password",Toast.LENGTH_LONG).show();
