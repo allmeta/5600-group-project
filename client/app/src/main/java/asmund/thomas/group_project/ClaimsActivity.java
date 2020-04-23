@@ -207,7 +207,6 @@ public class ClaimsActivity extends AppCompatActivity {
 
                         }
                     }
-
                     @Override
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                         token.continuePermissionRequest();
@@ -288,7 +287,6 @@ public class ClaimsActivity extends AppCompatActivity {
             }
         }
     }
-
     // Create an image file for the image to be stored in
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -304,10 +302,10 @@ public class ClaimsActivity extends AppCompatActivity {
         return image;
     }
 
-    public void alertDialog(String message, String buttonName, final String settings, final Uri uri) {
+    public void alertDialog(String message, String buttonName, final String settings, final Uri uri){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message)
-                .setNegativeButton(buttonName, new DialogInterface.OnClickListener() {
+                .setNegativeButton(buttonName, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (settings == null)
@@ -321,7 +319,6 @@ public class ClaimsActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -331,16 +328,25 @@ public class ClaimsActivity extends AppCompatActivity {
             claimImage.setImageBitmap(bitmap);
         }
     }
-
-    public void logout(View view) {
-        getSharedPreferences("MySharedPref", MODE_PRIVATE).edit().clear().commit();
-        Intent intent = new Intent(this, LauncherActivity.class);
-        startActivity(intent);
+    public void logout(View view){
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to log out?\nThis will erase all local data.")
+                .setIcon(android.R.drawable.ic_menu_help)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getSharedPreferences("MySharedPref",MODE_PRIVATE).edit().clear().commit();
+                        Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no,null)
+                .show();
     }
-
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
+        Intent intent=new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
