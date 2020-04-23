@@ -9,7 +9,6 @@ public class Person {
     String passClear;
     String passHash;
     String email;
-    int numberOfClaims;
 
     public Person() {
         id = "na";
@@ -18,7 +17,6 @@ public class Person {
         passClear = "na";
         passHash = "na";
         email = "na";
-        numberOfClaims = 0;
     }
 
     public String getId(){return this.id;}
@@ -33,15 +31,6 @@ public class Person {
 
     public String getEmail(){return this.email;}
 
-    public int getNumberOfClaims() {return numberOfClaims;}
-
-    public void setNumberOfClaims(int numberOfClaims) {
-        this.numberOfClaims = numberOfClaims;
-    }
-
-    public void addClaim() {
-        numberOfClaims++;
-    }
 }
 
 

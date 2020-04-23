@@ -37,12 +37,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void verifyLogin(View view) {
-        //String username = usernameEditText.getText().toString();
-        //String password = passwordEditText.getText().toString();
-        String username = "joe@gmail.com";
-        String password = "xpto";
-
-        if(username == "" || password == ""){
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        if(username.equals("") || password.equals("")){
             Toast.makeText(this, "Enter username and password ", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -56,17 +53,18 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println(response);
                 loginButton.setVisibility(View.VISIBLE);
                 spinner.setVisibility(View.GONE);
-
                 if (response != null) {
                     Gson g = new Gson();
                     Person person = g.fromJson(response, Person.class);
-                    Utils.savePerson(person,getApplicationContext());
-                    Intent intent = new Intent(getApplicationContext(), ClaimsActivity.class);
-                    startActivity(intent);
+                    if(person != null){
+                        Utils.savePerson(person,getApplicationContext());
+                        Intent intent = new Intent(getApplicationContext(), ClaimsActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Invalid password or username",Toast.LENGTH_LONG).show();
+                    }
                 }
-                else{
-                    Toast.makeText(getApplicationContext(),"Invalid password",Toast.LENGTH_LONG).show();
-                }
+
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {

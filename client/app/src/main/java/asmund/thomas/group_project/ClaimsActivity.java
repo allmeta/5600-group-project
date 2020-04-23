@@ -25,7 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -47,6 +49,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,6 +68,7 @@ public class ClaimsActivity extends AppCompatActivity {
     private PopupWindow popupWindow;
     private EditText claimDesEditText;
     private ImageView claimImage;
+    private TextView noClaimsTextView;
     String currentPhotoPath;
     GPSTracker gps;
 
@@ -95,6 +99,7 @@ public class ClaimsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        noClaimsTextView = findViewById(R.id.no_claims_tv);
 
         gps = new GPSTracker();
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
@@ -102,11 +107,11 @@ public class ClaimsActivity extends AppCompatActivity {
         Gson g = new Gson();
         currentUser = g.fromJson(personJsonString, Person.class);
 
-        claimList=Utils.loadClaims(getApplicationContext());
-        if(claimList==null){
+        claimList = Utils.loadClaims(getApplicationContext());
+        if (claimList == null) {
             getClaimsForPerson(currentUser.getId());
-        }
-        else{
+        } else {
+            noClaimsTextView.setVisibility(View.INVISIBLE);
             adapter = new ClaimAdapter(claimList, listOnClickListener);
             recyclerView.setAdapter(adapter);
         }
@@ -121,14 +126,13 @@ public class ClaimsActivity extends AppCompatActivity {
                 if (response != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
-                        currentUser.setNumberOfClaims(jsonObject.getInt("numberOfClaims"));
                         JSONArray claimIds = jsonObject.getJSONArray("claimId");
                         JSONArray claimDescriptions = jsonObject.getJSONArray("claimDes");
                         JSONArray claimPhotos = jsonObject.getJSONArray("claimPhoto");
                         JSONArray claimLocations = jsonObject.getJSONArray("claimLocation");
                         for (int i = 0; i < claimIds.length(); i++) {
                             String claimId = claimIds.getString(i);
-                            if(!claimId.equals("na")) {
+                            if (!claimId.equals("na")) {
                                 String claimDes = claimDescriptions.getString(i);
                                 String claimPhoto = claimPhotos.getString(i);
                                 String claimLocation = claimLocations.getString(i);
@@ -136,13 +140,17 @@ public class ClaimsActivity extends AppCompatActivity {
                                 claimList.add(i, c);
                             }
                         }
-                        Utils.saveClaims(claimList,getApplicationContext());
-                        adapter = new ClaimAdapter(claimList, listOnClickListener);
-                        recyclerView.setAdapter(adapter);
+                        System.out.println(claimList.size());
+                        if (claimList.size() == 0) {
+                            noClaimsTextView.setVisibility(View.VISIBLE);
+                        } else {
+                            adapter = new ClaimAdapter(claimList, listOnClickListener);
+                            recyclerView.setAdapter(adapter);
+                        }
+                        Utils.saveClaims(claimList, getApplicationContext());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    System.out.println("claims: " + currentUser.getNumberOfClaims());
                 }
             }
         };
@@ -175,7 +183,8 @@ public class ClaimsActivity extends AppCompatActivity {
         popupWindow = new PopupWindow(container, width - width / 4, height - height / 2, true);
         popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
     }
-    private void requestMultiplePermissions(){
+
+    private void requestMultiplePermissions() {
         Dexter.withActivity(this)
                 .withPermissions(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -198,6 +207,7 @@ public class ClaimsActivity extends AppCompatActivity {
 
                         }
                     }
+
                     @Override
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                         token.continuePermissionRequest();
@@ -214,13 +224,13 @@ public class ClaimsActivity extends AppCompatActivity {
     }
 
     public void addClaim(View view) {
-        if(claimList.size() >= Utils.MAX_NUMBER_OF_CLAIMS){
+        if (claimList.size() >= Utils.MAX_NUMBER_OF_CLAIMS) {
             Toast.makeText(this, "Max number of claims reached", Toast.LENGTH_SHORT).show();
             return;
         }
         String description = claimDesEditText.getText().toString();
 
-        if(currentPhotoPath == null || description.equals("")) {
+        if (currentPhotoPath == null || description.equals("")) {
             Toast.makeText(this, "Please fill out description and take photo!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -231,11 +241,11 @@ public class ClaimsActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 if (response != "OK") {
                     Toast.makeText(getApplicationContext(), "Claim added!", Toast.LENGTH_LONG).show();
-                    Claim c = new Claim(currentUser.getNumberOfClaims()+"", claimDesEditText.getText().toString(), currentPhotoPath, gps.getLatitude()+","+gps.getLongitude());
-                    claimList.add(currentUser.numberOfClaims, c);
+                    Claim c = new Claim(claimList.size() + "", claimDesEditText.getText().toString(), currentPhotoPath, gps.getLatitude() + "," + gps.getLongitude());
+                    claimList.add(claimList.size(), c);
+                    Utils.saveClaims(claimList, getApplicationContext());
                     adapter = new ClaimAdapter(claimList, listOnClickListener);
                     recyclerView.setAdapter(adapter);
-                    currentUser.addClaim();
                 }
 
             }
@@ -249,10 +259,10 @@ public class ClaimsActivity extends AppCompatActivity {
         HashMap<String, String> params = new HashMap<>();
 
         params.put("userId", currentUser.getId());
-        params.put("indexUpdateClaim", currentUser.getNumberOfClaims() + "");
+        params.put("indexUpdateClaim", claimList.size() + "");
         params.put("newClaimDes", claimDesEditText.getText().toString());
         params.put("newClaimPho", currentPhotoPath);
-        params.put("newClaimLoc", gps.getLatitude()+","+gps.getLongitude());
+        params.put("newClaimLoc", gps.getLatitude() + "," + gps.getLongitude());
 
         CustomRequest insertNewClaimRequest = new CustomRequest(Request.Method.POST, Utils.INSERT_NEW_CLAIM_URL, params, listener, errorListener);
         queue.add(insertNewClaimRequest);
@@ -278,6 +288,7 @@ public class ClaimsActivity extends AppCompatActivity {
             }
         }
     }
+
     // Create an image file for the image to be stored in
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -293,10 +304,10 @@ public class ClaimsActivity extends AppCompatActivity {
         return image;
     }
 
-    public void alertDialog(String message, String buttonName, final String settings, final Uri uri){
+    public void alertDialog(String message, String buttonName, final String settings, final Uri uri) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message)
-                .setNegativeButton(buttonName, new DialogInterface.OnClickListener(){
+                .setNegativeButton(buttonName, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (settings == null)
@@ -310,6 +321,7 @@ public class ClaimsActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -319,14 +331,16 @@ public class ClaimsActivity extends AppCompatActivity {
             claimImage.setImageBitmap(bitmap);
         }
     }
-    public void logout(View view){
-        getSharedPreferences("MySharedPref",MODE_PRIVATE).edit().clear().commit();
+
+    public void logout(View view) {
+        getSharedPreferences("MySharedPref", MODE_PRIVATE).edit().clear().commit();
         Intent intent = new Intent(this, LauncherActivity.class);
         startActivity(intent);
     }
+
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(Intent.ACTION_MAIN);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

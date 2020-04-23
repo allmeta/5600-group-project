@@ -32,8 +32,10 @@ public class ClaimAdapter extends RecyclerView.Adapter<ClaimAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ClaimAdapter.ViewHolder viewHolder, int position) {
         Claim claim = claimList.get(position);
-        TextView textView = viewHolder.nameTextView;
-        textView.setText(claim.getDes());
+        TextView idTextView = viewHolder.idTextView;
+        idTextView.setText(claim.getId());
+        TextView nameTextView = viewHolder.nameTextView;
+        nameTextView.setText(claim.getDes());
     }
 
     @Override
@@ -44,12 +46,14 @@ public class ClaimAdapter extends RecyclerView.Adapter<ClaimAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
-
+        public TextView idTextView;
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setTag(this);
             itemView.setOnClickListener(onItemClickListener);
             nameTextView = itemView.findViewById(R.id.item_name);
+
+            idTextView = itemView.findViewById(R.id.item_id);
         }
     }
 

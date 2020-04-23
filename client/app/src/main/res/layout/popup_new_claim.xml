@@ -22,8 +22,8 @@
         />
     <ImageView
         android:id="@+id/claim_iv"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
         android:layout_toRightOf="@id/take_photo_button"
         android:layout_below="@id/claim_des_et"/>
     <Button
