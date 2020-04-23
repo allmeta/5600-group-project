@@ -59,8 +59,6 @@ public class LoginActivity extends AppCompatActivity {
                 spinner.setVisibility(View.GONE);
 
                 if (response != null) {
-                    Gson g = new Gson();
-                    Person person = g.fromJson(response, Person.class);
                     final SharedPreferences.Editor editor = getSharedPreferences("MySharedPref", MODE_PRIVATE).edit();
                     editor.putString("user", response);
                     editor.commit();
