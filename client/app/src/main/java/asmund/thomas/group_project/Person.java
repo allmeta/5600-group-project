@@ -38,6 +38,10 @@ public class Person {
     public void setNumberOfClaims(int numberOfClaims) {
         this.numberOfClaims = numberOfClaims;
     }
+
+    public void addClaim() {
+        numberOfClaims++;
+    }
 }
 
 

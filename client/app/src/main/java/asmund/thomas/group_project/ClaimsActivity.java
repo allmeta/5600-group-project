@@ -214,6 +214,10 @@ public class ClaimsActivity extends AppCompatActivity {
     }
 
     public void addClaim(View view) {
+        if(claimList.size() >= Utils.MAX_NUMBER_OF_CLAIMS){
+            Toast.makeText(this, "Max number of claims reached", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String description = claimDesEditText.getText().toString();
 
         if(currentPhotoPath == null || description.equals("")) {
@@ -231,6 +235,7 @@ public class ClaimsActivity extends AppCompatActivity {
                     claimList.add(currentUser.numberOfClaims, c);
                     adapter = new ClaimAdapter(claimList, listOnClickListener);
                     recyclerView.setAdapter(adapter);
+                    currentUser.addClaim();
                 }
 
             }

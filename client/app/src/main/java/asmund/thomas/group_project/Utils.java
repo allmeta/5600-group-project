@@ -26,6 +26,7 @@ import java.util.List;
 
 class Utils {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
+    public static final int MAX_NUMBER_OF_CLAIMS = 5;
     private static final String host="10.0.2.2";
     private static final String port="8080";
     private static final String BASE_URL="http://"+host+":"+port+"/";
