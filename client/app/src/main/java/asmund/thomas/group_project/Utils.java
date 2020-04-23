@@ -20,7 +20,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 class Utils {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static int CURRENT_USER;
-    private static final String host="192.168.1.129";
+    private static final String host="10.0.2.2";
     private static final String port="8080";
     private static final String BASE_URL="http://"+host+":"+port+"/";
     public static final String LOGIN_URL=BASE_URL+"methodPostRemoteLogin";
