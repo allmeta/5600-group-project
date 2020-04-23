@@ -26,7 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/gallery_thumb" />
+            app:srcCompat="@drawable/ic_full_image" />
 
         <View
             android:id="@+id/divider2"
