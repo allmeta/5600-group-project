@@ -315,9 +315,20 @@ public class ClaimsActivity extends AppCompatActivity {
         }
     }
     public void logout(View view){
-        getSharedPreferences("MySharedPref",MODE_PRIVATE).edit().clear().commit();
-        Intent intent = new Intent(this, LauncherActivity.class);
-        startActivity(intent);
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to log out?\nThis will erase all local data.")
+                .setIcon(android.R.drawable.ic_menu_help)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getSharedPreferences("MySharedPref",MODE_PRIVATE).edit().clear().commit();
+                        Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no,null)
+                .show();
     }
     @Override
     public void onBackPressed() {
