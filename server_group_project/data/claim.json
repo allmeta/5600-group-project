@@ -1,33 +1,33 @@
 [
   {
     "id": "0",
-    "numberOfClaims": "3",
+    "numberOfClaims": "4",
     "claimId": [
       "0",
       "1",
       "2",
-      "na",
+      "3",
       "na"
     ],
     "claimDes": [
       "Første claim",
       "Real claim",
       "Test med bilde og gps",
-      "na",
+      "xsxsxsxs",
       "na"
     ],
     "claimPhoto": [
       "/photo/test",
       "IMG_20200422_210056.jpg",
       "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_122101_5770679597975655316.jpg",
-      "na",
+      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_154638_1847507214195790615.jpg",
       "na"
     ],
     "claimLocation": [
       "koordinater",
       "59.911491,10.757933",
       "59.94551833333333,10.946861666666667",
-      "na",
+      "59.8930022,10.8483596",
       "na"
     ]
   },

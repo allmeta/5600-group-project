@@ -34,13 +34,12 @@ public class ViewClaimActivity extends AppCompatActivity {
 
         claimIdText.setText(String.format("Claim id: %s", claim.id));
         desc.setText(claim.des);
-        String fname=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath()+"/Camera/"+claim.photo;
-        Bitmap b=BitmapFactory.decodeFile(fname);
-        if(b==null){
-            Toast.makeText(getApplicationContext(), "Photo not found: "+fname, Toast.LENGTH_LONG).show();
+        Bitmap p=Utils.loadImageFromFile(claim.photo,photo.getMaxWidth(),photo.getMaxHeight());
+        if(p!=null){
+            photo.setImageBitmap(p);
         }
         else{
-            photo.setImageBitmap(b);
+            Toast.makeText(getApplicationContext(), "Image not found: "+claim.photo, Toast.LENGTH_SHORT).show();
         }
     }
     public void edit(View view){
