@@ -37,10 +37,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void verifyLogin(View view) {
-        //String username = usernameEditText.getText().toString();
-        //String password = passwordEditText.getText().toString();
-        String username = "joe@gmail.com";
-        String password = "xpto";
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        //String username = "joe@gmail.com";
+
+        //String password = "xpto";
 
         loginButton.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
