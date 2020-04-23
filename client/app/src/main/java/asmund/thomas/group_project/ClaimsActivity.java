@@ -120,11 +120,13 @@ public class ClaimsActivity extends AppCompatActivity {
                         JSONArray claimLocations = jsonObject.getJSONArray("claimLocation");
                         for (int i = 0; i < claimIds.length(); i++) {
                             String claimId = claimIds.getString(i);
-                            String claimDes = claimDescriptions.getString(i);
-                            String claimPhoto = claimPhotos.getString(i);
-                            String claimLocation = claimLocations.getString(i);
-                            Claim c = new Claim(claimId, claimDes, claimPhoto, claimLocation);
-                            claimList.add(i, c);
+                            if(!claimId.equals("na")) {
+                                String claimDes = claimDescriptions.getString(i);
+                                String claimPhoto = claimPhotos.getString(i);
+                                String claimLocation = claimLocations.getString(i);
+                                Claim c = new Claim(claimId, claimDes, claimPhoto, claimLocation);
+                                claimList.add(i, c);
+                            }
                         }
                         adapter = new ClaimAdapter(claimList, listOnClickListener);
                         recyclerView.setAdapter(adapter);
@@ -213,8 +215,6 @@ public class ClaimsActivity extends AppCompatActivity {
         Response.Listener listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println(response);
-
                 if (response != "OK") {
                     Toast.makeText(getApplicationContext(), "Claim added!", Toast.LENGTH_LONG).show();
                 }
@@ -225,7 +225,6 @@ public class ClaimsActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "could not contact server", Toast.LENGTH_LONG).show();
-                System.out.println(error.getMessage());
             }
         };
         HashMap<String, String> params = new HashMap<>();
@@ -260,8 +259,8 @@ public class ClaimsActivity extends AppCompatActivity {
             }
         }
     }
+    // Create an image file for the image to be stored in
     private File createImageFile() throws IOException {
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
