@@ -37,12 +37,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void verifyLogin(View view) {
-        String username = usernameEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        //String username = "joe@gmail.com";
+        //String username = usernameEditText.getText().toString();
+        //String password = passwordEditText.getText().toString();
+        String username = "joe@gmail.com";
 
-        //String password = "xpto";
+        String password = "xpto";
 
+        if(username == "" || password == ""){
+            Toast.makeText(this, "Enter username and password ", Toast.LENGTH_SHORT).show();
+            return;
+        }
         loginButton.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
 
