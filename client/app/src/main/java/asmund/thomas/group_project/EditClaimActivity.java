@@ -19,6 +19,7 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -45,6 +46,7 @@ import java.util.List;
 public class EditClaimActivity extends AppCompatActivity {
 
     Claim claim;
+    TextView id;
     EditText desc;
     ImageView photo;
     private String currentPhotoPath;
@@ -58,9 +60,11 @@ public class EditClaimActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_claim);
         claim=new Gson().fromJson(getIntent().getStringExtra("claim"),Claim.class);
         desc = findViewById(R.id.desc);
+        id = findViewById(R.id.claimid);
         photo=findViewById(R.id.photo);
 
         desc.setText(claim.des);
+        id.setText("Claim id: "+claim.id);
         Bitmap p=Utils.loadImageFromFile(claim.photo,photo.getMaxWidth(),photo.getMaxHeight());
         if(p!=null){
             photo.setImageBitmap(p);
