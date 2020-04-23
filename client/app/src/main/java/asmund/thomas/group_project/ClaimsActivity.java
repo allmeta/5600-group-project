@@ -1,5 +1,6 @@
 package asmund.thomas.group_project;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -146,20 +148,13 @@ public class ClaimsActivity extends AppCompatActivity {
 
     public void openNewClaimWindow(View view) {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestMultiplePermissions();
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
             return;
         }
         locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10, gps);
-        System.out.println(gps.getLatitude() + "  " + gps.getLongitude());
-/*        LayoutInflater layoutInflater = getLayoutInflater();
+        LayoutInflater layoutInflater = getLayoutInflater();
         ViewGroup container = (ViewGroup) layoutInflater.inflate(R.layout.popup_new_claim, null);
         claimDesEditText = container.findViewById(R.id.claim_des_et);
         claimImage = container.findViewById(R.id.claim_iv);
@@ -167,12 +162,11 @@ public class ClaimsActivity extends AppCompatActivity {
         int height = recyclerView.getHeight();
 
         popupWindow = new PopupWindow(container, width - width / 4, height - height / 2, true);
-        popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);*/
+        popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
     }
     private void requestMultiplePermissions(){
         Dexter.withActivity(this)
                 .withPermissions(
-
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -183,18 +177,16 @@ public class ClaimsActivity extends AppCompatActivity {
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         // check if all permissions are granted
                         if (report.areAllPermissionsGranted()) {
-                            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER,5000,10, gps);
                             Toast.makeText(getApplicationContext(), "All permissions accepted", Toast.LENGTH_SHORT).show();
                         }
 
                         // check for permanent denial of any permission
                         if (report.isAnyPermissionPermanentlyDenied()) {
-                            /*alertDialog("Manglende Rettighet! Aktiver lokasjonstjenester og lagring",
-                                    "Instillinger", Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
-                             */
+                            alertDialog("Missing permissions! Activate location and storage services",
+                                    "Settings", Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
+
                         }
                     }
-
                     @Override
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                         token.continuePermissionRequest();
@@ -230,7 +222,6 @@ public class ClaimsActivity extends AppCompatActivity {
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "could not contact server", Toast.LENGTH_LONG).show();
@@ -243,7 +234,7 @@ public class ClaimsActivity extends AppCompatActivity {
         params.put("indexUpdateClaim", currentUser.getNumberOfClaims() + "");
         params.put("newClaimDes", claimDesEditText.getText().toString());
         params.put("newClaimPho", currentPhotoPath);
-        params.put("newClaimLoc", "koordinater");
+        params.put("newClaimLoc", gps.getLatitude()+","+gps.getLongitude());
 
         CustomRequest insertNewClaimRequest = new CustomRequest(Request.Method.POST, Utils.INSERT_NEW_CLAIM_URL, params, listener, errorListener);
         queue.add(insertNewClaimRequest);
@@ -258,10 +249,8 @@ public class ClaimsActivity extends AppCompatActivity {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
                 ex.printStackTrace();
             }
-            // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "asmund.thomas.group_project.fileprovider",
@@ -281,20 +270,35 @@ public class ClaimsActivity extends AppCompatActivity {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
         currentPhotoPath = image.getAbsolutePath();
         System.out.println(currentPhotoPath);
         return image;
     }
 
+    public void alertDialog(String message, String buttonName, final String settings, final Uri uri){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message)
+                .setNegativeButton(buttonName, new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (settings == null)
+                            return;
+                        Intent intent = new Intent(settings);
+                        if (uri != null)
+                            intent.setData(uri);
+                        startActivityForResult(intent, 233);
+                    }
+                })
+                .create()
+                .show();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Utils.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            claimImage.setImageBitmap(imageBitmap);
+            Bitmap bitmap = Utils.loadImageFromFile(currentPhotoPath, claimImage.getWidth(), claimImage.getHeight());
+            claimImage.setImageBitmap(bitmap);
         }
     }
 
