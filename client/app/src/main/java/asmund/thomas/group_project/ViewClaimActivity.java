@@ -52,4 +52,8 @@ public class ViewClaimActivity extends AppCompatActivity {
         intent.putExtra("location",claim.getLocation());
         startActivity(intent);
     }
+    public void onBackPressed() {
+        Intent intent=new Intent(getApplicationContext(),ClaimsActivity.class);
+        startActivity(intent);
+    }
 }

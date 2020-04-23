@@ -56,9 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (response != null) {
                     Gson g = new Gson();
                     Person person = g.fromJson(response, Person.class);
-                    final SharedPreferences.Editor editor = getSharedPreferences("MySharedPref", MODE_PRIVATE).edit();
-                    editor.putString("user", response);
-                    editor.commit();
+                    Utils.savePerson(person,getApplicationContext());
                     Intent intent = new Intent(getApplicationContext(), ClaimsActivity.class);
                     startActivity(intent);
                 }
@@ -85,8 +83,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void toClaims(View view) {
-        Intent intent = new Intent(getApplicationContext(), ClaimsActivity.class);
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 }

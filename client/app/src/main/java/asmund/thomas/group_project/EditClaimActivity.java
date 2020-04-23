@@ -68,7 +68,7 @@ public class EditClaimActivity extends AppCompatActivity {
         else{
             Toast.makeText(getApplicationContext(), "Image not found: "+claim.photo, Toast.LENGTH_SHORT).show();
         }
-        String personJsonString = getSharedPreferences("MySharedPref", MODE_PRIVATE) .getString("user", "");
+        String personJsonString = getSharedPreferences("MySharedPref", MODE_PRIVATE) .getString("person", "");
         Gson g = new Gson();
         currentUser = g.fromJson(personJsonString, Person.class);
         gps = new GPSTracker();
