@@ -42,6 +42,10 @@ public class LoginActivity extends AppCompatActivity {
         String username = "joe@gmail.com";
         String password = "xpto";
 
+        if(username == "" || password == ""){
+            Toast.makeText(this, "Enter username and password ", Toast.LENGTH_SHORT).show();
+            return;
+        }
         loginButton.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
 

@@ -18,7 +18,8 @@
         <ImageView
             android:id="@+id/photo"
             android:layout_width="match_parent"
-            android:layout_height="343dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
             android:layout_marginEnd="0dp"
             android:layout_marginRight="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,20 +52,23 @@
         <TextView
             android:id="@+id/desc"
             android:layout_width="match_parent"
-            android:layout_height="305dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.43"
             android:layout_marginHorizontal="8dp"
             android:text="Description" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="0.07"
+            >
 
             <Button
                 android:id="@+id/edit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
                 android:background="@color/colorPrimary"
                 android:onClick="edit"
                 android:text="Edit" />
@@ -72,8 +76,8 @@
             <Button
                 android:id="@+id/map"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
                 android:background="@color/colorPrimary"
                 android:onClick="map"
                 android:text="Map" />

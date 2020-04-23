@@ -227,6 +227,10 @@ public class ClaimsActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 if (response != "OK") {
                     Toast.makeText(getApplicationContext(), "Claim added!", Toast.LENGTH_LONG).show();
+                    Claim c = new Claim(currentUser.getNumberOfClaims()+"", claimDesEditText.getText().toString(), currentPhotoPath, gps.getLatitude()+","+gps.getLongitude());
+                    claimList.add(currentUser.numberOfClaims, c);
+                    adapter = new ClaimAdapter(claimList, listOnClickListener);
+                    recyclerView.setAdapter(adapter);
                 }
 
             }
