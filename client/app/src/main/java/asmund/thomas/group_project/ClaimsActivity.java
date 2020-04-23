@@ -98,7 +98,7 @@ public class ClaimsActivity extends AppCompatActivity {
 
         gps = new GPSTracker();
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-        String personJsonString = sh.getString("user", "");
+        String personJsonString = sh.getString("person", "");
         Gson g = new Gson();
         currentUser = g.fromJson(personJsonString, Person.class);
 
@@ -313,6 +313,18 @@ public class ClaimsActivity extends AppCompatActivity {
             Bitmap bitmap = Utils.loadImageFromFile(currentPhotoPath, claimImage.getWidth(), claimImage.getHeight());
             claimImage.setImageBitmap(bitmap);
         }
+    }
+    public void logout(View view){
+        getSharedPreferences("MySharedPref",MODE_PRIVATE).edit().clear().commit();
+        Intent intent = new Intent(this, LauncherActivity.class);
+        startActivity(intent);
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }

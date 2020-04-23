@@ -14,9 +14,9 @@ public class LauncherActivity extends AppCompatActivity {
         new android.os.Handler().postDelayed(
             new Runnable() {
                 public void run() {
-                    if(getSharedPreferences("MySharedPref", MODE_PRIVATE).contains("user")){
+                    if(getSharedPreferences("MySharedPref", MODE_PRIVATE).contains("person")){
                         // go to claims instead
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), ClaimsActivity.class);
                         startActivity(intent);
                     }
                     else{

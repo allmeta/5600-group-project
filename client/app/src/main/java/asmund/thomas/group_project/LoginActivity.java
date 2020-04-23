@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         //String username = usernameEditText.getText().toString();
         //String password = passwordEditText.getText().toString();
         String username = "joe@gmail.com";
-
         String password = "xpto";
 
         if(username == "" || password == ""){
@@ -59,9 +58,9 @@ public class LoginActivity extends AppCompatActivity {
                 spinner.setVisibility(View.GONE);
 
                 if (response != null) {
-                    final SharedPreferences.Editor editor = getSharedPreferences("MySharedPref", MODE_PRIVATE).edit();
-                    editor.putString("user", response);
-                    editor.commit();
+                    Gson g = new Gson();
+                    Person person = g.fromJson(response, Person.class);
+                    Utils.savePerson(person,getApplicationContext());
                     Intent intent = new Intent(getApplicationContext(), ClaimsActivity.class);
                     startActivity(intent);
                 }
@@ -88,8 +87,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void toClaims(View view) {
-        Intent intent = new Intent(getApplicationContext(), ClaimsActivity.class);
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 }

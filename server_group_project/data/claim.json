@@ -1,34 +1,34 @@
 [
   {
     "id": "0",
-    "numberOfClaims": "4",
+    "numberOfClaims": "5",
     "claimId": [
       "0",
       "1",
       "2",
       "3",
-      "na"
+      "4"
     ],
     "claimDes": [
       "Første claim",
       "Real claim",
       "Test med bilde og gps",
-      "update test2",
-      "na"
+      "Enda mer real claim",
+      "Test full liste"
     ],
     "claimPhoto": [
       "/photo/test",
       "IMG_20200422_210056.jpg",
-      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_192645_6019380631115711334.jpg",
-      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_192929_5657919467670871800.jpg",
-      "na"
+      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_122101_5770679597975655316.jpg",
+      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_132119_1091128042210617434.jpg",
+      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_182035_1811237580166214824.jpg"
     ],
     "claimLocation": [
       "koordinater",
       "59.911491,10.757933",
-      "59.8929767,10.8482381",
-      "0.0,0.0",
-      "na"
+      "59.94551833333333,10.946861666666667",
+      "59.94551833333333,10.946861666666667",
+      "59.94551833333333,10.946861666666667"
     ]
   },
   {
@@ -97,32 +97,32 @@
   },
   {
     "id": "3",
-    "numberOfClaims": "0",
+    "numberOfClaims": "3",
     "claimId": [
-      "na",
-      "na",
-      "na",
+      "0",
+      "1",
+      "2",
       "na",
       "na"
     ],
     "claimDes": [
-      "na",
-      "na",
-      "na",
+      "Description of claim",
+      "test",
+      "test2",
       "na",
       "na"
     ],
     "claimPhoto": [
-      "na",
-      "na",
-      "na",
+      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_135309_8557612038667262321.jpg",
+      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_144541_8634036299298774371.jpg",
+      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_144711_3232393126877333471.jpg",
       "na",
       "na"
     ],
     "claimLocation": [
-      "na",
-      "na",
-      "na",
+      "59.94551833333333,10.946861666666667",
+      "59.94551833333333,10.946861666666667",
+      "59.94551833333333,10.946861666666667",
       "na",
       "na"
     ]
