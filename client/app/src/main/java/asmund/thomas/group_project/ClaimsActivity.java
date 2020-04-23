@@ -5,13 +5,18 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +33,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.DexterError;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.PermissionRequestErrorListener;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,10 +59,12 @@ public class ClaimsActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    LocationManager locationManager;
     private PopupWindow popupWindow;
     private EditText claimDesEditText;
     private ImageView claimImage;
     String currentPhotoPath;
+    GPSTracker gps;
 
     private List<Claim> claimList;
 
@@ -64,7 +79,7 @@ public class ClaimsActivity extends AppCompatActivity {
             Claim claim = claimList.get(position);
             Intent intent = new Intent(getApplicationContext(), ViewClaimActivity.class);
             // Pass claim to new activity
-            intent.putExtra("claim",new Gson().toJson(claim));
+            intent.putExtra("claim", new Gson().toJson(claim));
             startActivity(intent);
         }
     };
@@ -79,6 +94,7 @@ public class ClaimsActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        gps = new GPSTracker();
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         String personJsonString = sh.getString("user", "");
         Gson g = new Gson();
@@ -129,7 +145,21 @@ public class ClaimsActivity extends AppCompatActivity {
     }
 
     public void openNewClaimWindow(View view) {
-        LayoutInflater layoutInflater = getLayoutInflater();
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestMultiplePermissions();
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10, gps);
+        System.out.println(gps.getLatitude() + "  " + gps.getLongitude());
+/*        LayoutInflater layoutInflater = getLayoutInflater();
         ViewGroup container = (ViewGroup) layoutInflater.inflate(R.layout.popup_new_claim, null);
         claimDesEditText = container.findViewById(R.id.claim_des_et);
         claimImage = container.findViewById(R.id.claim_iv);
@@ -137,7 +167,47 @@ public class ClaimsActivity extends AppCompatActivity {
         int height = recyclerView.getHeight();
 
         popupWindow = new PopupWindow(container, width - width / 4, height - height / 2, true);
-        popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);*/
+    }
+    private void requestMultiplePermissions(){
+        Dexter.withActivity(this)
+                .withPermissions(
+
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        // check if all permissions are granted
+                        if (report.areAllPermissionsGranted()) {
+                            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER,5000,10, gps);
+                            Toast.makeText(getApplicationContext(), "All permissions accepted", Toast.LENGTH_SHORT).show();
+                        }
+
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            /*alertDialog("Manglende Rettighet! Aktiver lokasjonstjenester og lagring",
+                                    "Instillinger", Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
+                             */
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).
+                withErrorListener(new PermissionRequestErrorListener() {
+                    @Override
+                    public void onError(DexterError error) {
+                        Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .onSameThread()
+                .check();
     }
 
     public void addClaim(View view) {
