@@ -101,7 +101,15 @@ public class ClaimsActivity extends AppCompatActivity {
         String personJsonString = sh.getString("user", "");
         Gson g = new Gson();
         currentUser = g.fromJson(personJsonString, Person.class);
-        getClaimsForPerson(currentUser.getId());
+
+        claimList=Utils.loadClaims(getApplicationContext());
+        if(claimList==null){
+            getClaimsForPerson(currentUser.getId());
+        }
+        else{
+            adapter = new ClaimAdapter(claimList, listOnClickListener);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     private void getClaimsForPerson(String personId) {
@@ -128,6 +136,7 @@ public class ClaimsActivity extends AppCompatActivity {
                                 claimList.add(i, c);
                             }
                         }
+                        Utils.saveClaims(claimList,getApplicationContext());
                         adapter = new ClaimAdapter(claimList, listOnClickListener);
                         recyclerView.setAdapter(adapter);
                     } catch (JSONException e) {
@@ -207,10 +216,11 @@ public class ClaimsActivity extends AppCompatActivity {
     public void addClaim(View view) {
         String description = claimDesEditText.getText().toString();
 
-        if(currentPhotoPath == null || description.equals("")){
+        if(currentPhotoPath == null || description.equals("")) {
             Toast.makeText(this, "Please fill out description and take photo!", Toast.LENGTH_SHORT).show();
             return;
         }
+
         RequestQueue queue = Volley.newRequestQueue(this);
         Response.Listener listener = new Response.Listener<String>() {
             @Override

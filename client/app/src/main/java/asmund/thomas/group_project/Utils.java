@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,9 +14,15 @@ import android.widget.ImageView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 class Utils {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -44,6 +51,20 @@ class Utils {
         String[] latlong=s.split(",");
         return new LatLng(Double.parseDouble(latlong[0]),Double.parseDouble(latlong[1]));
 
+    }
+    public static void saveClaims(List<Claim> claims,Context c){
+        SharedPreferences.Editor sh=c.getSharedPreferences("mySharedPref",MODE_PRIVATE).edit();
+        Gson gson=new Gson();
+        Type listType= new TypeToken<List<Claim>>(){}.getType();
+        String json=gson.toJson(claims,listType);
+        sh.putString("claims",json);
+        sh.apply();
+    }
+    public static List<Claim> loadClaims(Context c){
+        String json=c.getSharedPreferences("mySharedPref",MODE_PRIVATE).getString("claims",null);
+        if (json==null) {return null;}
+        Type listType= new TypeToken<List<Claim>>(){}.getType();
+        return new Gson().fromJson(json,listType);
     }
     public static Bitmap loadImageFromFile(String currentPhotoPath, int targetW, int targetH) {
 

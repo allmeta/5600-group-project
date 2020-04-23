@@ -83,8 +83,10 @@ public class EditClaimActivity extends AppCompatActivity {
     public void editFinish(View view){
         Claim newClaim=new Claim(claim.id,desc.getText().toString(),currentPhotoPath,gps.getLatitude()+","+gps.getLongitude());
         //update local
-
-
+        List<Claim> claims=Utils.loadClaims(getApplicationContext());
+        claims.remove(Integer.parseInt(claim.id));
+        claims.add(Integer.parseInt(claim.id),newClaim);
+        Utils.saveClaims(claims,getApplicationContext());
         //Update server
         RequestQueue queue = Volley.newRequestQueue(this);
         Response.Listener listener = new Response.Listener<String>() {

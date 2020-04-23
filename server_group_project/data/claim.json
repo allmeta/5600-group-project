@@ -13,21 +13,21 @@
       "Første claim",
       "Real claim",
       "Test med bilde og gps",
-      "xsxsxsxs123",
+      "update test2",
       "na"
     ],
     "claimPhoto": [
       "/photo/test",
       "IMG_20200422_210056.jpg",
-      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_122101_5770679597975655316.jpg",
-      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_170711_4468620315907973498.jpg",
+      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_192645_6019380631115711334.jpg",
+      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_192929_5657919467670871800.jpg",
       "na"
     ],
     "claimLocation": [
       "koordinater",
       "59.911491,10.757933",
-      "59.94551833333333,10.946861666666667",
-      "59.8930064,10.8483682",
+      "59.8929767,10.8482381",
+      "0.0,0.0",
       "na"
     ]
   },
