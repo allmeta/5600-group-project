@@ -85,12 +85,7 @@ public class EditClaimActivity extends AppCompatActivity {
         locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10, gps);
     }
     public void editFinish(View view){
-        Claim newClaim=new Claim(claim.id,desc.getText().toString(),currentPhotoPath,gps.getLatitude()+","+gps.getLongitude());
-        //update local
-        List<Claim> claims=Utils.loadClaims(getApplicationContext());
-        claims.remove(Integer.parseInt(claim.id));
-        claims.add(Integer.parseInt(claim.id),newClaim);
-        Utils.saveClaims(claims,getApplicationContext());
+        final Claim newClaim=new Claim(claim.id,desc.getText().toString(),currentPhotoPath,gps.getLatitude()+","+gps.getLongitude());
         //Update server
         RequestQueue queue = Volley.newRequestQueue(this);
         Response.Listener listener = new Response.Listener<String>() {
@@ -98,6 +93,16 @@ public class EditClaimActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 if (response != "OK") {
                     Toast.makeText(getApplicationContext(), "Claim updated!", Toast.LENGTH_LONG).show();
+                    //update local
+                    List<Claim> claims=Utils.loadClaims(getApplicationContext());
+                    claims.remove(Integer.parseInt(claim.id));
+                    claims.add(Integer.parseInt(claim.id),newClaim);
+                    Utils.saveClaims(claims,getApplicationContext());
+
+                    //switch to view
+                    Intent intent = new Intent(getApplicationContext(), ViewClaimActivity.class);
+                    intent.putExtra("claim",new Gson().toJson(newClaim));
+                    startActivity(intent);
                 }
 
             }
@@ -119,10 +124,6 @@ public class EditClaimActivity extends AppCompatActivity {
 
         CustomRequest insertNewClaimRequest = new CustomRequest(Request.Method.POST, Utils.UPDATE_CLAIM_URL, params, listener, errorListener);
         queue.add(insertNewClaimRequest);
-        //switch to view
-        Intent intent = new Intent(getApplicationContext(), ViewClaimActivity.class);
-        intent.putExtra("claim",new Gson().toJson(newClaim));
-        startActivity(intent);
 
     }
 
