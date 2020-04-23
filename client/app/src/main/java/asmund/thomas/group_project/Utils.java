@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.widget.ImageView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.commons.codec.binary.Hex;
@@ -17,16 +19,21 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 class Utils {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final String host="10.0.2.2";
+    public static int CURRENT_USER;
+    private static final String host="192.168.1.129";
     private static final String port="8080";
     private static final String BASE_URL="http://"+host+":"+port+"/";
     public static final String LOGIN_URL=BASE_URL+"methodPostRemoteLogin";
     public static final String CLAIMS_REQUEST_URL=BASE_URL+"getMethodMyClaims";
     public static final String INSERT_NEW_CLAIM_URL = BASE_URL + "postInsertNewClaim";
+    public static final String UPDATE_CLAIM_URL = BASE_URL + "postUpdateClaim";
 
 
     public static String md5(String input) {
         return new String(Hex.encodeHex(DigestUtils.md5(input)));
+    }
+    public static void setUser(Integer user){
+        CURRENT_USER=user;
     }
     public static void logout(Context c){
         c.getSharedPreferences("mySharedPref",MODE_PRIVATE).edit().clear().apply();
