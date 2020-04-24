@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +48,6 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -140,7 +138,6 @@ public class ClaimsActivity extends AppCompatActivity {
                                 claimList.add(i, c);
                             }
                         }
-                        System.out.println(claimList.size());
                         if (claimList.size() == 0) {
                             noClaimsTextView.setVisibility(View.VISIBLE);
                         } else {
@@ -207,6 +204,7 @@ public class ClaimsActivity extends AppCompatActivity {
 
                         }
                     }
+
                     @Override
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                         token.continuePermissionRequest();
@@ -287,6 +285,7 @@ public class ClaimsActivity extends AppCompatActivity {
             }
         }
     }
+
     // Create an image file for the image to be stored in
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -298,14 +297,13 @@ public class ClaimsActivity extends AppCompatActivity {
                 storageDir      /* directory */
         );
         currentPhotoPath = image.getAbsolutePath();
-        System.out.println(currentPhotoPath);
         return image;
     }
 
-    public void alertDialog(String message, String buttonName, final String settings, final Uri uri){
+    public void alertDialog(String message, String buttonName, final String settings, final Uri uri) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message)
-                .setNegativeButton(buttonName, new DialogInterface.OnClickListener(){
+                .setNegativeButton(buttonName, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (settings == null)
@@ -319,6 +317,7 @@ public class ClaimsActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -328,7 +327,8 @@ public class ClaimsActivity extends AppCompatActivity {
             claimImage.setImageBitmap(bitmap);
         }
     }
-    public void logout(View view){
+
+    public void logout(View view) {
         new AlertDialog.Builder(this)
                 .setTitle("Logout")
                 .setMessage("Are you sure you want to log out?\nThis will erase all local data.")
@@ -336,17 +336,18 @@ public class ClaimsActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        getSharedPreferences("MySharedPref",MODE_PRIVATE).edit().clear().commit();
+                        getSharedPreferences("MySharedPref", MODE_PRIVATE).edit().clear().commit();
                         Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
                         startActivity(intent);
                     }
                 })
-                .setNegativeButton(android.R.string.no,null)
+                .setNegativeButton(android.R.string.no, null)
                 .show();
     }
+
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(Intent.ACTION_MAIN);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
