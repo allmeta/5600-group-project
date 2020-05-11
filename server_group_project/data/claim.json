@@ -1,32 +1,32 @@
 [
   {
     "id": "0",
-    "numberOfClaims": "3",
+    "numberOfClaims": "0",
     "claimId": [
-      "0",
-      "1",
-      "2",
+      "na",
+      "na",
+      "na",
       "na",
       "na"
     ],
     "claimDes": [
-      "Description",
-      "test",
-      "test 2",
+      "na",
+      "na",
+      "na",
       "na",
       "na"
     ],
     "claimPhoto": [
-      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_232100_993997820884073015.jpg",
-      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_232639_262204935973992385.jpg",
-      "/storage/emulated/0/Android/data/asmund.thomas.group_project/files/Pictures/JPEG_20200423_232921_2825227422699003381.jpg",
+      "na",
+      "na",
+      "na",
       "na",
       "na"
     ],
     "claimLocation": [
-      "59.94551833333333,10.946861666666667",
-      "59.94551833333333,10.946861666666667",
-      "59.94551833333333,10.946861666666667",
+      "na",
+      "na",
+      "na",
       "na",
       "na"
     ]

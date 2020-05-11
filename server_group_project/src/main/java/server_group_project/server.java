@@ -78,8 +78,6 @@ public class server {
 		else { 
 			String ppEmail = pp.getEmail();
 			String ppPh = pp.getPassHash();
-			System.out.println(ppEmail + " : " + em);
-			System.out.println(ppPh + " : " + ph);
 			if (ppEmail.equals(em) && ppPh.equals(ph)) {
 				System.out.println("server.methodPostRemoteLogin> email and passwd are the same");
 			}

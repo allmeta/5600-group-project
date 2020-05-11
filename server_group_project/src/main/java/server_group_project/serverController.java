@@ -41,20 +41,20 @@ public class serverController {
 	
 	// ================================================================================		
 	//this getMethod is mapped to hostname:port/getMethodMyClaims
-	//@RequestMapping(value="/getMethodMyClaims", method=RequestMethod.GET)
+	//@RequestMapping(value="/getMethodMyClaims", method=RequestMethod.GET) 
 	@GetMapping(value="/getMethodMyClaims")
 	public String  getMethodMyClaims(@RequestParam String id) {
-		System.out.println(id);
 		Claims cl;
 		if (id.equals(null)) {
 			out.println("serverController.getMethodMyClaims> FATAL ERROR with null id");
 			return null;
 		}
-	    cl = Application.s.getMyClaims(id);
+	    cl = Application.s.getMyClaims(id);		    
 	    Gson gson = new Gson(); 
 		String clJson = gson.toJson(cl);
 	    return clJson;
-	}
+	}			
+	
 	// ================================================================================	
 	//this postInsertNewClaim is mapped to hostname:port/postInsertNewClaim
 	//@RequestMapping(value="/postInsertNewClaim", method=RequestMethod.POST) 
