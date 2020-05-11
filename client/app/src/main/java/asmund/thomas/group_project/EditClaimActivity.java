@@ -65,7 +65,8 @@ public class EditClaimActivity extends AppCompatActivity {
 
         desc.setText(claim.des);
         id.setText("Claim id: "+claim.id);
-        Bitmap p=Utils.loadImageFromFile(claim.photo,photo.getMaxWidth(),photo.getMaxHeight());
+        currentPhotoPath=claim.photo;
+        Bitmap p=Utils.loadImageFromFile(currentPhotoPath,photo.getMaxWidth(),photo.getMaxHeight());
         if(p!=null){
             photo.setImageBitmap(p);
         }
